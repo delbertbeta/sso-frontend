@@ -8,18 +8,59 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "paths": {
-      "$router/*": ["./src/router/*"],
-      "$router": ["./src/router"],
-      "$pages": ["./src/pages"],
-      "$pages/*": ["./src/pages/*"],
-      "$components/*": ["./src/components/*"],
-      "$components": ["./src/components"],
-      "$assets/*": ["./src/components/*"],
-      "$assets": ["./src/components"],
-
+      "$router/*": [
+        "./src/router/*"
+      ],
+      "$router": [
+        "./src/router"
+      ],
+      "$pages": [
+        "./src/pages"
+      ],
+      "$pages/*": [
+        "./src/pages/*"
+      ],
+      "$components/*": [
+        "./src/components/*"
+      ],
+      "$components": [
+        "./src/components"
+      ],
+      "$assets/*": [
+        "./src/components/*"
+      ],
+      "$assets": [
+        "./src/components"
+      ],
+      "$api/*": [
+        "./src/api/*"
+      ],
+      "$api": [
+        "./src/api"
+      ],
+      "$utils/*": [
+        "./src/utils/*"
+      ],
+      "$utils": [
+        "./src/utils"
+      ],
+      "$layouts/*": [
+        "./src/layouts/*"
+      ],
+      "$layouts": [
+        "./src/layouts"
+      ],
     },
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
 }

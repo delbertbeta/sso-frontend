@@ -1,8 +1,16 @@
 import { RouteRecordRaw } from 'vue-router';
-import Index from '$pages/Index.vue';
-import Login from '$pages/Login.vue';
+import Login from '$pages/auth/Login.vue';
+import Register from '$pages/auth/Register.vue';
+import LoginLayout from '$layouts/LoginLayout.vue';
 
 export const routes: RouteRecordRaw[] = [
-  { path: '/', name: 'Index',  component: Index },
-  { path: '/login', name: 'Login', component: Login },
+  {
+    path: '/auth',
+    name: 'Auth',
+    component: LoginLayout,
+    children: [
+      { path: 'login', name: 'Login', component: Login },
+      { path: 'register', name: 'Register', component: Register },
+    ],
+  },
 ];
