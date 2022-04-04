@@ -55,6 +55,12 @@
       "$layouts": [
         "./src/layouts"
       ],
+      "$typings/*": [
+        "./src/typings/*"
+      ],
+      "$typings": [
+        "./src/typings"
+      ],
     },
   },
   "include": [

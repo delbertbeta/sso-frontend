@@ -9,5 +9,6 @@ export const apiUrl = {
   },
   auth: {
     register: getFullUrl('/auth/register'),
+    login: getFullUrl('/auth/login'),
   },
 };

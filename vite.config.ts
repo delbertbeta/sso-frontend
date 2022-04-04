@@ -29,6 +29,7 @@ export default defineConfig({
       '$assets': resolve(__dirname, './src/assets'),
       '$utils': resolve(__dirname, './src/utils'),
       '$layouts': resolve(__dirname, './src/layouts'),
+      '$typings': resolve(__dirname, './src/typings'),
     },
   },
 })

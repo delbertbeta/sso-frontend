@@ -2,6 +2,7 @@ import { RouteRecordRaw } from 'vue-router';
 import Login from '$pages/auth/Login.vue';
 import Register from '$pages/auth/Register.vue';
 import LoginLayout from '$layouts/LoginLayout.vue';
+import IndexLayout from '$layouts/DefaultLayout.vue';
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -12,5 +13,10 @@ export const routes: RouteRecordRaw[] = [
       { path: 'login', name: 'Login', component: Login },
       { path: 'register', name: 'Register', component: Register },
     ],
+  },
+  {
+    path: '/',
+    name: 'Index',
+    component: IndexLayout,
   },
 ];

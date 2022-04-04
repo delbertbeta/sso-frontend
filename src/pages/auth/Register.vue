@@ -33,6 +33,7 @@
         <t-input v-model="formData.checkPassword" type="password" placeholder="请重复输入密码"></t-input>
       </t-form-item>
       <t-button
+        :class="{ 'has-error': hasError }"
         theme="primary"
         :loading="submitting"
         type="submit"
@@ -50,8 +51,8 @@ import { ArrowLeftIcon } from 'tdesign-icons-vue-next';
 import type { SubmitContext, FormRule } from 'tdesign-vue-next';
 import JSEncrypt from 'jsencrypt';
 
-import { getCryptoRsa, submitRegister } from '$api';
-import { digestSha256 } from '$utils/crypto';
+import { submitRegister } from '$api';
+import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
 
 const router = useRouter();
 
@@ -89,17 +90,20 @@ const rules: { [key in keyof typeof INITIAL_DATA]: FormRule[] } = {
 
 const formData = ref({ ...INITIAL_DATA });
 const submitting = ref<boolean>(false);
+const hasError = ref<boolean>(false);
 
 const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
   submitting.value = true;
+  hasError.value = false;
 
   if (validateResult !== true) {
     submitting.value = false;
+    hasError.value = true;
     return;
   }
 
   try {
-    const { data: { token, public_key } } = await getCryptoRsa();
+    const { data: { token, public_key } } = await getRsaFromLocalStorage();
 
     const { username, password, nickname, email } = formData.value;
 
@@ -118,11 +122,12 @@ const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
     };
 
     const res = await submitRegister(submitFormData);
-    if (res.code === 0) {
+    if (res.isErr) {
+      MessagePlugin.error('创建失败：' + res.response.msg);
+      hasError.value = true;
+    } else {
       MessagePlugin.success('创建成功');
       handleGoBackClick();
-    } else {
-      MessagePlugin.error('创建失败：' + res.msg);
     }
   } catch (e) {
     MessagePlugin.error('创建账号失败，请重试');
@@ -148,6 +153,10 @@ const handleGoBackClick = () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 22px;
+}
+
+.has-error {
+  animation: Spring 0.4s ease-in-out 0s 1;
 }
 
 :deep(.t-form__item) {

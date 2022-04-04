@@ -24,6 +24,7 @@
         <t-input v-model="formData.password" type="password" placeholder="请输入您的密码"></t-input>
       </t-form-item>
       <t-button
+        :class="{ 'has-error': hasError }"
         theme="primary"
         type="submit"
         style="margin-top: 32px; width: 100%; margin-bottom: 12px;"
@@ -41,8 +42,8 @@ import { ArrowRightIcon } from 'tdesign-icons-vue-next';
 import type { SubmitContext, FormRule } from 'tdesign-vue-next';
 import JSEncrypt from 'jsencrypt';
 
-import { getCryptoRsa, submitRegister } from '$api';
-import { digestSha256 } from '$utils/crypto';
+import { submitLogin } from '$api';
+import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
 
 const router = useRouter();
 
@@ -62,18 +63,20 @@ const rules: { [key in keyof typeof INITIAL_DATA]: FormRule[] } = {
 
 const formData = ref({ ...INITIAL_DATA });
 const submitting = ref<boolean>(false);
+const hasError = ref<boolean>(false);
 
 const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
   submitting.value = true;
+  hasError.value = false;
 
-  if (validateResult) {
+  if (validateResult !== true) {
+    hasError.value = true;
     submitting.value = false;
     return;
   }
 
   try {
-    const { data: { token, public_key } } = await getCryptoRsa();
-
+    const { data: { token, public_key } } = await getRsaFromLocalStorage();
     const { username, password } = formData.value;
 
     const hashedPass = await digestSha256(password);
@@ -88,11 +91,17 @@ const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
       rsa_token: token,
     };
 
-    const res = await submitRegister(submitFormData);
-    if (res.code === 0) {
+    const res = await submitLogin(submitFormData);
+    if (!res.isErr) {
       MessagePlugin.success('登录成功');
+      router.replace({ path: '/' });
     } else {
-      MessagePlugin.error('登录失败：' + res.msg);
+      if (res.response.code === 104) {
+        MessagePlugin.error('ID 或密码错误，请检查后重试');
+      } else {
+        MessagePlugin.error('登录失败：' + res.response.msg);
+      }
+      hasError.value = true;
     }
   } catch (e) {
     MessagePlugin.error('登录失败，请重试');
@@ -118,6 +127,10 @@ const handleGoBackClick = () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 22px;
+}
+
+.has-error {
+  animation: Spring 0.4s ease-in-out 0s 1;
 }
 
 :deep(.t-form__item) {
