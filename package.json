@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "is-chinese": "^1.4.6",
     "jsencrypt": "^3.2.1",
     "tdesign-icons-vue-next": "^0.0.7",
     "tdesign-vue-next": "^0.11.2",

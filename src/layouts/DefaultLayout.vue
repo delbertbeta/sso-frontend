@@ -10,9 +10,7 @@
             </div>
           </template>
           <template #operations>
-            <a href="javascript:;">
-              <t-icon class="t-menu__operations-icon" name="home" />
-            </a>
+            <self-face />
           </template>
         </t-head-menu>
       </t-header>
@@ -47,6 +45,7 @@
 <script setup lang="ts">
 import { key } from '$store';
 import { useStore } from 'vuex';
+import SelfFace from '$components/face/SelfFace.vue';
 
 const store = useStore(key);
 

@@ -4,7 +4,10 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Face: typeof import('./src/components/face/Face.vue')['default']
+    SelfFace: typeof import('./src/components/face/SelfFace.vue')['default']
     TAside: typeof import('tdesign-vue-next')['Aside']
+    TAvatar: typeof import('tdesign-vue-next')['Avatar']
     TButton: typeof import('tdesign-vue-next')['Button']
     TCheckboxGroup: typeof import('tdesign-vue-next')['CheckboxGroup']
     TContent: typeof import('tdesign-vue-next')['Content']
@@ -20,6 +23,7 @@ declare module 'vue' {
     TMenuItem: typeof import('tdesign-vue-next')['MenuItem']
     TRadio: typeof import('tdesign-vue-next')['Radio']
     TRadioGroup: typeof import('tdesign-vue-next')['RadioGroup']
+    TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
     TSwitch: typeof import('tdesign-vue-next')['Switch']
   }
 }
