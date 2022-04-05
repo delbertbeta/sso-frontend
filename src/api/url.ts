@@ -11,4 +11,7 @@ export const apiUrl = {
     register: getFullUrl('/auth/register'),
     login: getFullUrl('/auth/login'),
   },
+  user: {
+    self: getFullUrl('/user'),
+  }
 };

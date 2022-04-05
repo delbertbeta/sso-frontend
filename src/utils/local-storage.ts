@@ -11,9 +11,17 @@ export function safeGetStorage<T>(key: string) {
   }
 }
 
-export function safeSetStorage(key: string, val: any) {
+export function safeSetStorage<T>(key: string, val: T) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export function safeDeleteStorage(key: string) {
+  try {
+    localStorage.removeItem(key);
   } catch (e) {
     console.log(e);
   }

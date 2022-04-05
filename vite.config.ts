@@ -30,6 +30,7 @@ export default defineConfig({
       '$utils': resolve(__dirname, './src/utils'),
       '$layouts': resolve(__dirname, './src/layouts'),
       '$typings': resolve(__dirname, './src/typings'),
+      '$store': resolve(__dirname, './src/store'),
     },
   },
 })

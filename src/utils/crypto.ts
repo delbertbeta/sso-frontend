@@ -22,7 +22,7 @@ export async function getRsaFromLocalStorage() {
     if (rsaRes.isErr) {
       throw rsaRes.response;
     }
-    safeSetStorage('rsa_info', {
+    safeSetStorage<LocalStorageRsa>('rsa_info', {
       write_at: (new Date().getTime() / 1000),
       data: rsaRes.response.data,
     })

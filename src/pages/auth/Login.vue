@@ -44,6 +44,8 @@ import JSEncrypt from 'jsencrypt';
 
 import { submitLogin } from '$api';
 import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
+import { safeDeleteStorage, safeGetStorage } from '$utils/local-storage';
+import type { LastPath } from '$typings/path';
 
 const router = useRouter();
 
@@ -94,7 +96,8 @@ const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
     const res = await submitLogin(submitFormData);
     if (!res.isErr) {
       MessagePlugin.success('登录成功');
-      router.replace({ path: '/' });
+      router.replace({ path: safeGetStorage<LastPath>('last_path')?.path ?? '/' });
+      safeDeleteStorage('last_path');
     } else {
       if (res.response.code === 104) {
         MessagePlugin.error('ID 或密码错误，请检查后重试');

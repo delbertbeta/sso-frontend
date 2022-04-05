@@ -61,6 +61,12 @@
       "$typings": [
         "./src/typings"
       ],
+      "$store/*": [
+        "./src/store/*"
+      ],
+      "$store": [
+        "./src/store"
+      ],
     },
   },
   "include": [

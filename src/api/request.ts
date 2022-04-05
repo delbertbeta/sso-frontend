@@ -1,4 +1,5 @@
-import { Rsa } from '$typings/crypto';
+import type { Rsa } from '$typings/crypto';
+import type { User } from '$typings/user';
 import { ErrorResult, ErrResponse, OkResponse, SuccessResult } from '$typings/response';
 import { apiUrl } from './url';
 
@@ -51,4 +52,8 @@ export const submitRegister = (form: any) => {
 
 export const submitLogin = (form: any) => {
   return post<OkResponse<{}>, ErrResponse>(apiUrl.auth.login, form);
+}
+
+export const getSelfInfo = () => {
+  return get<OkResponse<User>, ErrResponse>(apiUrl.user.self);
 }
