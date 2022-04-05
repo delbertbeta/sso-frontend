@@ -4,13 +4,18 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AdminSideBar: typeof import('./src/components/admin-side-bar/AdminSideBar.vue')['default']
     Face: typeof import('./src/components/face/Face.vue')['default']
+    OperationDropdown: typeof import('./src/components/operation-dropdown/OperationDropdown.vue')['default']
     SelfFace: typeof import('./src/components/face/SelfFace.vue')['default']
     TAside: typeof import('tdesign-vue-next')['Aside']
     TAvatar: typeof import('tdesign-vue-next')['Avatar']
     TButton: typeof import('tdesign-vue-next')['Button']
     TCheckboxGroup: typeof import('tdesign-vue-next')['CheckboxGroup']
     TContent: typeof import('tdesign-vue-next')['Content']
+    TDropdown: typeof import('tdesign-vue-next')['Dropdown']
+    TDropdownItem: typeof import('tdesign-vue-next')['DropdownItem']
+    TDropdownMenu: typeof import('tdesign-vue-next')['DropdownMenu']
     TFooter: typeof import('tdesign-vue-next')['Footer']
     TForm: typeof import('tdesign-vue-next')['Form']
     TFormItem: typeof import('tdesign-vue-next')['FormItem']
