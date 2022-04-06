@@ -54,6 +54,10 @@ export const submitLogin = (form: any) => {
   return post<OkResponse<{}>, ErrResponse>(apiUrl.auth.login, form);
 }
 
+export const logout = () => {
+  return post<OkResponse<{}>, ErrResponse>(apiUrl.auth.logout, {});
+}
+
 export const getSelfInfo = () => {
   return get<OkResponse<User>, ErrResponse>(apiUrl.user.self);
 }

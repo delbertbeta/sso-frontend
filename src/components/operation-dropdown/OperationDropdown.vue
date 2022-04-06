@@ -17,11 +17,28 @@
 </template>
 
 <script setup lang="ts">
+import { MessagePlugin } from 'tdesign-vue-next';
 import type { DropdownOption } from 'tdesign-vue-next';
 import SelfFace from '$components/face/SelfFace.vue';
+import { logout } from '$api';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { key } from '$store';
 
-const handleClick = (e: DropdownOption) => {
+const router = useRouter();
+const store = useStore(key);
 
+const handleClick = async (e: DropdownOption) => {
+  if (e.value === 'logout') {
+    const res = await logout();
+    if (res.isErr) {
+      MessagePlugin.error('登出失败：' + res.response.msg);
+    } else {
+      MessagePlugin.success('您已成功登出');
+      store.commit('user/reset');
+      router.replace('/auth/login');
+    }
+  }
 }
 </script>
 
