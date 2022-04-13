@@ -24,12 +24,15 @@ declare module 'vue' {
     TIcon: typeof import('tdesign-vue-next')['Icon']
     TInput: typeof import('tdesign-vue-next')['Input']
     TLayout: typeof import('tdesign-vue-next')['Layout']
+    TLoading: typeof import('tdesign-vue-next')['Loading']
     TMenu: typeof import('tdesign-vue-next')['Menu']
     TMenuItem: typeof import('tdesign-vue-next')['MenuItem']
     TRadio: typeof import('tdesign-vue-next')['Radio']
     TRadioGroup: typeof import('tdesign-vue-next')['RadioGroup']
     TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
     TSwitch: typeof import('tdesign-vue-next')['Switch']
+    TTextarea: typeof import('tdesign-vue-next')['Textarea']
+    TTooltip: typeof import('tdesign-vue-next')['Tooltip']
   }
 }
 

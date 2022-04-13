@@ -16,8 +16,8 @@
       </t-header>
       <t-layout>
         <admin-side-bar />
-        <t-layout class="content-layout">
-          <t-content>
+        <t-layout>
+          <t-content class="main-content">
             <router-view />
           </t-content>
           <t-footer>Copyright @ 2022-{{ new Date().getFullYear() }} Delbert. All Rights Reserved</t-footer>
@@ -50,5 +50,13 @@ store.dispatch('user/getSelfInfo');
 
 .default-layout {
   height: 100%;
+}
+
+.main-content {
+  margin: 16px 16px 0;
+  padding: 16px;
+  border-radius: 3px;
+  background: var(--td-bg-color-container);
+  overflow: hidden;
 }
 </style>

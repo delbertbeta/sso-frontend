@@ -1,18 +1,21 @@
 <template>
-  <t-avatar v-if="targetName" :alt="nickname">{{ targetName }}</t-avatar>
-  <t-avatar v-else :image="faceUrl" :alt="nickname" />
+  <t-avatar v-if="targetName" :style="style" :size="size" :alt="nickname">{{ targetName }}</t-avatar>
+  <t-avatar v-else :style="style" :size="size" :image="faceUrl" :alt="nickname" />
 </template>
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
+import type { CSSProperties } from 'vue';
 import isChinese from 'is-chinese';
 
 const props = defineProps<{
   nickname: string;
   faceUrl?: string;
+  size?: string;
+  style?: CSSProperties;
 }>();
 
-const { nickname, faceUrl } = props;
+const { nickname, faceUrl, size } = props;
 
 const targetName = computed(() => {
   if (faceUrl) return null;
