@@ -15,11 +15,9 @@ const props = defineProps<{
   style?: CSSProperties;
 }>();
 
-const { nickname, faceUrl, size } = props;
-
 const targetName = computed(() => {
-  if (faceUrl) return null;
-  const splitted = nickname.trim().split(' ');
+  if (props.faceUrl) return null;
+  const splitted = props.nickname.trim().split(' ');
   if (splitted.length > 1) {
     return splitted.map(v => v[0]).join('').toUpperCase();
   } else {
@@ -35,9 +33,4 @@ const targetName = computed(() => {
 </script>
 
 <style scoped>
-.face-wrapper {
-  /* display: inline-block;
-  border: 50%;
-  overflow: hidden; */
-}
 </style>

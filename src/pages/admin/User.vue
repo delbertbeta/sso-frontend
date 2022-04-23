@@ -5,31 +5,21 @@
       <div class="title-row">
         <div style="font-weight: bold; font-size: 18px;">个人信息</div>
         <div>
+          <t-button :theme="editing ? 'danger' : 'primary'" :disabled="submitting" @click="switchEditing">{{ editing ?
+              '取消' : '修改'
+          }}
+          </t-button>
           <template v-if="editing">
-            <t-button style="margin-right: 18px;" theme="primary" @click="handleSubmit">保存</t-button>
+            <t-button style="margin-left: 18px;" theme="primary" @click="handleSubmit" :loading="submitting">保存
+            </t-button>
           </template>
-          <t-button
-            :theme="editing ? 'danger' : 'primary'"
-            @click="switchEditing"
-          >{{ editing ? '取消' : '修改' }}</t-button>
         </div>
       </div>
-      <t-form
-        ref="form"
-        :disabled="!editing"
-        :data="formData"
-        :colon="true"
-        label-align="top"
-        style="width: 600px;"
-        @submit="handleSubmit"
-      >
+      <t-form ref="form" :disabled="!editing || submitting" :data="formData" :colon="true" label-align="top"
+        style="width: 600px;" @submit="handleSubmit">
         <div class="form-row">
-          <face
-            style="margin-right: 16px; flex-shrink: 0;"
-            :face-url="faceInfo.face_url"
-            size="68px"
-            :nickname="faceInfo.nickname"
-          />
+          <FaceUploader ref="faceUploader" style="margin-right: 16px;
+            flex-shrink: 0;" size="68px" :editing="editing" :submitting="submitting" />
           <t-form-item style="width: 100%;" label="ID" name="username">
             <t-tooltip style="width: 100%;" content="ID 注册后无法修改">
               <t-input disabled v-model="formData.username"></t-input>
@@ -40,9 +30,6 @@
         <t-form-item label="用户名" name="nickname">
           <t-input v-model="formData.nickname" placeholder="请输入用户名"></t-input>
         </t-form-item>
-        <t-form-item label="邮箱地址" name="email">
-          <t-input v-model="formData.email" placeholder="请输入邮箱地址"></t-input>
-        </t-form-item>
         <t-form-item label="个人签名" name="self_info">
           <t-textarea v-model="formData.self_info" placeholder="请输入个人签名" :maxcharacter="100"></t-textarea>
         </t-form-item>
@@ -52,45 +39,67 @@
 </template>
 
 <script setup lang="ts">
-import { key } from '$store';
-import { ref, computed, reactive, watch } from 'vue';
+import { ref, computed, reactive, watch, watchEffect } from 'vue';
 import { useStore } from 'vuex';
-import Face from '$components/face/Face.vue';
+import { MessagePlugin } from 'tdesign-vue-next';
+
+import { key } from '$store';
+import FaceUploader from '$components/face/FaceUploader.vue';
+import { patchSelfInfo } from '$api/request';
 
 const store = useStore(key);
 
 const selfInfo = computed(() => store.state.user.self);
 
-const faceInfo = reactive({
-  face_url: '',
-  nickname: '',
-});
-
 const formData = reactive({
-  username: '',
-  nickname: '',
-  email: '',
-  self_info: '',
+  username: selfInfo.value?.username ?? '',
+  nickname: selfInfo.value?.nickname ?? '',
+  self_info: selfInfo.value?.self_info ?? '',
 });
 
-watch(selfInfo, () => {
-  if (!selfInfo.value) {
-    return;
-  }
-  formData.email = selfInfo.value.email ?? '';
-  formData.nickname = selfInfo.value.nickname;
-  formData.username = selfInfo.value.username;
-  formData.self_info = selfInfo.value.self_info ?? '';
-
-  faceInfo.face_url = selfInfo.value.face_url!;
-  faceInfo.nickname = selfInfo.value.nickname;
-});
-
+const faceUploader = ref<InstanceType<typeof FaceUploader> | null>(null);
 const editing = ref<boolean>(false);
 const submitting = ref<boolean>(false);
 
-const handleSubmit = () => {
+watchEffect(() => {
+  if (!selfInfo.value) {
+    return;
+  }
+  if (!editing.value) {
+    formData.nickname = selfInfo.value.nickname;
+    formData.username = selfInfo.value.username;
+    formData.self_info = selfInfo.value.self_info ?? '';
+  }
+});
 
+const handleSubmit = async () => {
+  let face_id: string | null;
+  submitting.value = true;
+  try {
+    face_id = await faceUploader.value!.doSubmit();
+  } catch (e) {
+    MessagePlugin.error('上传头像失败：' + JSON.stringify(e));
+    submitting.value = false;
+    return;
+  }
+
+  try {
+    const res = await patchSelfInfo({
+      self_info: formData.self_info,
+      nickname: formData.nickname,
+      face_id,
+    });
+    if (res.isErr) {
+      MessagePlugin.error('编辑失败：' + JSON.stringify(res.response));
+      return;
+    }
+  } catch (e) {
+    MessagePlugin.error('编辑失败：' + JSON.stringify(e));
+  }
+
+  await store.dispatch('user/getSelfInfo');
+  submitting.value = false;
+  editing.value = false;
 };
 
 const switchEditing = () => {

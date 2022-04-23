@@ -1,12 +1,6 @@
 <template>
   <t-aside style="border-top: 1px solid var(--component-border); width: auto;">
-    <t-menu
-      :collapsed="collapsed"
-      :value="routerPath"
-      @change="handleValueChange"
-      theme="light"
-      value="dashboard"
-    >
+    <t-menu :collapsed="collapsed" :value="routerPath" @change="handleValueChange" theme="light" value="dashboard">
       <t-menu-item value="/">
         <template #icon>
           <t-icon name="dashboard" />
@@ -18,6 +12,12 @@
           <t-icon name="user" />
         </template>
         个人信息
+      </t-menu-item>
+      <t-menu-item value="/security">
+        <template #icon>
+          <t-icon name="secured" />
+        </template>
+        账号安全
       </t-menu-item>
       <template #operations>
         <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
