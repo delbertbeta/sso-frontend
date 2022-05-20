@@ -11,7 +11,7 @@
     "is-chinese": "^1.4.6",
     "jsencrypt": "^3.2.1",
     "tdesign-icons-vue-next": "^0.0.7",
-    "tdesign-vue-next": "^0.11.2",
+    "tdesign-vue-next": "^0.15.0",
     "vue": "^3.0.5",
     "vue-router": "4",
     "vuex": "^4.0.2"
