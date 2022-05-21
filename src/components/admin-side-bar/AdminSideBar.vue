@@ -1,27 +1,61 @@
 <template>
   <t-aside style="border-top: 1px solid var(--component-border); width: auto;">
-    <t-menu :collapsed="collapsed" :value="routerPath" @change="handleValueChange" theme="light" value="dashboard">
+    <t-menu :collapsed="collapsed" :value="routerPath" @change="handleValueChange" theme="light" value="dashboard"
+      :defaultExpanded="['personal', 'integration']">
       <t-menu-item value="/">
         <template #icon>
           <t-icon name="dashboard" />
         </template>
         仪表盘
       </t-menu-item>
-      <t-menu-item value="/user">
+      <t-submenu value="personal" title="个人">
         <template #icon>
           <t-icon name="user" />
         </template>
-        个人信息
-      </t-menu-item>
-      <t-menu-item value="/security">
-        <template #icon>
-          <t-icon name="secured" />
+        <t-menu-item value="/user">
+          <template #icon>
+            <t-icon name="info-circle" />
+          </template>
+          个人信息
+        </t-menu-item>
+        <t-menu-item value="/security">
+          <template #icon>
+            <t-icon name="secured" />
+          </template>
+          账号安全
+        </t-menu-item>
+        <template #operations>
+          <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
         </template>
-        账号安全
-      </t-menu-item>
-      <template #operations>
-        <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
-      </template>
+      </t-submenu>
+      <t-submenu value="integration" title="集成">
+        <template #icon>
+          <t-icon name="link" />
+        </template>
+        <t-menu-item value="/security">
+          <template #icon>
+            <t-icon name="app" />
+          </template>
+          Apps
+        </t-menu-item>
+      </t-submenu>
+      <t-submenu value="developer" title="开发者">
+        <template #icon>
+          <t-icon name="code" />
+        </template>
+        <t-menu-item value="/security">
+          <template #icon>
+            <t-icon name="add" />
+          </template>
+          创建 App
+        </t-menu-item>
+        <t-menu-item value="/security">
+          <template #icon>
+            <t-icon name="root-list" />
+          </template>
+          管理 App
+        </t-menu-item>
+      </t-submenu>
     </t-menu>
   </t-aside>
 </template>
