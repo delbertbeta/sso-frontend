@@ -28,7 +28,7 @@
           <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
         </template>
       </t-submenu>
-      <t-submenu value="integration" title="集成">
+      <t-submenu value="integration" title="连接">
         <template #icon>
           <t-icon name="link" />
         </template>

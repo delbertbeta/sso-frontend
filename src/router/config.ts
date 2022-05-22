@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import Login from '$pages/auth/Login.vue';
 import Register from '$pages/auth/Register.vue';
-import Dashboard from '$pages/admin/DashBoard.vue';
+import Dashboard from '$pages/admin/Dashboard.vue';
 import User from '$pages/admin/User.vue';
 import LoginLayout from '$layouts/LoginLayout.vue';
 import IndexLayout from '$layouts/DefaultLayout.vue';
