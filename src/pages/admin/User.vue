@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, watch, watchEffect } from 'vue';
+import { ref, computed, reactive, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { MessagePlugin } from 'tdesign-vue-next';
 
@@ -76,7 +76,7 @@ const handleSubmit = async () => {
   let face_id: string | null;
   submitting.value = true;
   try {
-    face_id = await faceUploader.value!.doSubmit();
+    face_id = await faceUploader.value!.getImageUploader()!.doSubmit();
   } catch (e) {
     MessagePlugin.error('上传头像失败：' + JSON.stringify(e));
     submitting.value = false;
@@ -107,7 +107,7 @@ const switchEditing = () => {
 }
 </script>
 
-<style scoped>
+<style>
 .form-wrapper {
   display: flex;
   align-items: center;

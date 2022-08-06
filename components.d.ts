@@ -7,6 +7,7 @@ declare module 'vue' {
     AdminSideBar: typeof import('./src/components/admin-side-bar/AdminSideBar.vue')['default']
     Face: typeof import('./src/components/face/Face.vue')['default']
     FaceUploader: typeof import('./src/components/face/FaceUploader.vue')['default']
+    ImageUploader: typeof import('./src/components/image-uploader/ImageUploader.vue')['default']
     OperationDropdown: typeof import('./src/components/operation-dropdown/OperationDropdown.vue')['default']
     SelfFace: typeof import('./src/components/face/SelfFace.vue')['default']
     TAside: typeof import('tdesign-vue-next')['Aside']

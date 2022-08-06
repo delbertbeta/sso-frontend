@@ -5,6 +5,7 @@ import Dashboard from '$pages/admin/Dashboard.vue';
 import User from '$pages/admin/User.vue';
 import LoginLayout from '$layouts/LoginLayout.vue';
 import IndexLayout from '$layouts/DefaultLayout.vue';
+import NewApp from '$pages/admin/developer/NewApp.vue';
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -23,6 +24,7 @@ export const routes: RouteRecordRaw[] = [
     children: [
       { path: '', name: 'Dashboard', component: Dashboard },
       { path: 'user', name: 'User', component: User },
+      { path: 'developer/new_app', name: 'NewApp', component: NewApp },
     ]
   },
 ];

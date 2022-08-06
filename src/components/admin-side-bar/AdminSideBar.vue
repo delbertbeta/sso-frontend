@@ -32,7 +32,7 @@
         <template #icon>
           <t-icon name="link" />
         </template>
-        <t-menu-item value="/security">
+        <t-menu-item value="/connection">
           <template #icon>
             <t-icon name="app" />
           </template>
@@ -43,13 +43,13 @@
         <template #icon>
           <t-icon name="code" />
         </template>
-        <t-menu-item value="/security">
+        <t-menu-item value="/developer/new_app">
           <template #icon>
             <t-icon name="add" />
           </template>
           创建 App
         </t-menu-item>
-        <t-menu-item value="/security">
+        <t-menu-item value="/developer/manage_app">
           <template #icon>
             <t-icon name="root-list" />
           </template>
