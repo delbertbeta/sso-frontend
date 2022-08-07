@@ -15,6 +15,7 @@ declare module 'vue' {
     TButton: typeof import('tdesign-vue-next')['Button']
     TCheckboxGroup: typeof import('tdesign-vue-next')['CheckboxGroup']
     TContent: typeof import('tdesign-vue-next')['Content']
+    TDialog: typeof import('tdesign-vue-next')['Dialog']
     TDropdown: typeof import('tdesign-vue-next')['Dropdown']
     TDropdownItem: typeof import('tdesign-vue-next')['DropdownItem']
     TDropdownMenu: typeof import('tdesign-vue-next')['DropdownMenu']

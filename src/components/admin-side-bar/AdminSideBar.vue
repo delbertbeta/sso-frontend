@@ -39,23 +39,12 @@
           Apps
         </t-menu-item>
       </t-submenu>
-      <t-submenu value="developer" title="开发者">
+      <t-menu-item value="/developer">
         <template #icon>
           <t-icon name="code" />
         </template>
-        <t-menu-item value="/developer/new_app">
-          <template #icon>
-            <t-icon name="add" />
-          </template>
-          创建 App
-        </t-menu-item>
-        <t-menu-item value="/developer/manage_app">
-          <template #icon>
-            <t-icon name="root-list" />
-          </template>
-          管理 App
-        </t-menu-item>
-      </t-submenu>
+        开发者
+      </t-menu-item>
     </t-menu>
   </t-aside>
 </template>

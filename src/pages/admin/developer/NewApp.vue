@@ -1,10 +1,7 @@
 <template>
   <div class="form-wrapper">
-    <div style="width: 600px;">
-      <div class="title-row">
-        <div style="font-weight: bold; font-size: 18px;">创建你的 App</div>
-      </div>
-      <t-form ref="form" :rules="rules" :data="formData" :colon="true" label-align="top" style="width: 600px;"
+    <div style="width: 100%;">
+      <t-form ref="form" :rules="rules" :data="formData" :colon="true" label-align="top" style="width: 100%;"
         @submit="handleSubmit">
         <div class="form-row">
           <image-uploader editing :submitting="submitting" style="margin-right: 16px;
