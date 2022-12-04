@@ -13,7 +13,7 @@ export interface SuccessResult<T> {
   isErr: false;
 }
 
-export interface ErrorResult<T> extends SuccessResult<T> {
+export interface ErrorResult<T> extends Omit<SuccessResult<T>, 'isErr'> {
   response: T;
   isErr: true;
 }

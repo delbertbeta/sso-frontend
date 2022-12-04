@@ -39,7 +39,9 @@ import { CreateAppParams } from '$typings/app';
 import { AppIcon } from 'tdesign-icons-vue-next';
 import { FormRule, SubmitContext } from 'tdesign-vue-next';
 
-import { reactive, ref } from 'vue';
+import { reactive, ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['submit']);
 
 const rules: { [key in keyof Partial<CreateAppParams>]: FormRule[] } = {
   name: [{
@@ -88,6 +90,10 @@ const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
     hasError.value = true;
     return;
   }
+
+  submitting.value = false;
+  hasError.value = false;
+  emit('submit');
 }
 </script>
 

@@ -16,4 +16,5 @@ export const apiUrl = {
     self: getFullUrl('/user'),
   },
   image: getFullUrl('/image'),
+  application: getFullUrl('/application'),
 };

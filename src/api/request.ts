@@ -3,6 +3,7 @@ import type { User } from '$typings/user';
 import { ErrorResult, ErrResponse, OkResponse, SuccessResult } from '$typings/response';
 import { apiUrl } from './url';
 import { PostImageRes } from '$typings/image';
+import { AppListRes } from '$typings/app';
 
 const decorateResponse = async <O, E>(res: Response) => {
   const resObj = await res.json();
@@ -87,4 +88,8 @@ export const postImage = (extension: string) => {
 
 export const patchImage = (imageId: string) => {
   return patch<OkResponse<{}>, ErrResponse>(`${apiUrl.image}/${imageId}`, '');
+}
+
+export const getAppList = () => {
+  return get<OkResponse<AppListRes>, ErrResponse>(apiUrl.application);
 }
