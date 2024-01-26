@@ -9,6 +9,10 @@ import { resolve } from 'path';
 export default defineConfig({
   server: {
     port: 3001,
+    hmr: {
+      port: 3001,
+      clientPort: 443,
+    },
   },
   plugins: [
     vue(),

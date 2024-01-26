@@ -1,4 +1,4 @@
-const baseHost = 'http://localhost:3000';
+const baseHost = 'https://sso-dev-api.delbertbeta.life';
 const basePrefix = '/api';
 
 const getFullUrl = (suffix: string) => baseHost + basePrefix + suffix;
