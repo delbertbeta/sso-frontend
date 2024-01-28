@@ -2,14 +2,12 @@
   <div class="title-bar">
     <div class="title">应用</div>
     <t-button @click="handleCreateButtonClick">
-      <add-icon slot="icon" />
+      <template #icon><add-icon slot="icon" /></template>
       新建 App
     </t-button>
     <t-dialog v-model:visible="showNewAppModal" header="新建 App" mode="modal" :confirmBtn="null" :cancelBtn="null"
       draggable width="600px" :closeOnOverlayClick="false" :closeOnEscKeydown="false" destroyOnClose>
-      <template #body>
-        <new-app @submit="handleSubmit" />
-      </template>
+      <new-app @submit="handleSubmit" />
     </t-dialog>
   </div>
   <application-list ref="applicationListRef" />

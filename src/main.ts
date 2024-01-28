@@ -6,6 +6,7 @@ import App from './App.vue';
 import store, { key } from './store';
 
 import 'tdesign-vue-next/es/style/index.css';
+
 import './index.css';
 
 const app = createApp(App);

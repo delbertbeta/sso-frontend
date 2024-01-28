@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import type { CSSProperties } from 'vue';
 import { patchImage, postImage } from '$api/request';
 import { cos, setCosToken } from '$utils/cos';

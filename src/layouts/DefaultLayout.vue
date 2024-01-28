@@ -46,6 +46,7 @@ store.dispatch('user/getSelfInfo');
 
 .page-title {
   font-size: 18px;
+  margin-left: 0;
 }
 
 .default-layout {

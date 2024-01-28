@@ -39,7 +39,7 @@ import { CreateAppParams } from '$typings/app';
 import { AppIcon } from 'tdesign-icons-vue-next';
 import { FormRule, SubmitContext } from 'tdesign-vue-next';
 
-import { reactive, ref, defineEmits } from 'vue';
+import { reactive, ref } from 'vue';
 
 const emit = defineEmits(['submit']);
 

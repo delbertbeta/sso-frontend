@@ -8,7 +8,7 @@
       </div>
     </div>
     <t-button class="application-item-right" theme="default" variant="outline">
-      <edit-1-icon slot="icon" />
+      <template #icon><edit-1-icon slot="icon" /></template>
       编辑
     </t-button>
   </div>
@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { AppListItem } from '$typings/app';
-import { defineProps } from 'vue';
 import Face from '$components/face/Face.vue';
 import { Edit1Icon } from 'tdesign-icons-vue-next';
 

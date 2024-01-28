@@ -1,10 +1,10 @@
 <template>
   <t-avatar v-if="targetName" :style="style" :size="size" :alt="nickname">{{ targetName }}</t-avatar>
-  <t-avatar v-else :style="style" :size="size" :image="faceUrl" :alt="nickname" />
+  <t-avatar v-else :style="style" :size="size" :image="faceUrl" :alt="nickname" :imageProps="{ fit: 'cover' }" />
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import type { CSSProperties } from 'vue';
 import isChinese from 'is-chinese';
 

@@ -3,7 +3,7 @@
     <t-dropdown trigger="click" @click="handleClick">
       <t-button variant="text" size="large">
         <self-face />
-        <t-icon name="chevron-down" style="margin-left: 8px;" />
+        <template #suffix><t-icon name="chevron-down" /></template>
       </t-button>
       <template #dropdown>
         <t-dropdown-menu>
