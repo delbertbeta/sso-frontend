@@ -1,4 +1,4 @@
-const baseHost = 'https://sso-dev-api.delbertbeta.life';
+const baseHost = API_END_POINT;
 const basePrefix = '/api';
 
 const getFullUrl = (suffix: string) => baseHost + basePrefix + suffix;

@@ -4,14 +4,15 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
+import devConfig from './dev.config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 3001,
+    port: devConfig.port,
     hmr: {
-      port: 3001,
-      clientPort: 443,
+      port: devConfig.hmrPort,
+      clientPort: devConfig.clientPort,
     },
   },
   plugins: [
@@ -39,5 +40,8 @@ export default defineConfig({
       '$typings': resolve(__dirname, './src/typings'),
       '$store': resolve(__dirname, './src/store'),
     },
+  },
+  define: {
+    API_END_POINT: `'${devConfig.apiEndPoint}'`,
   },
 })
