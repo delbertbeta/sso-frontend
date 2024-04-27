@@ -1,6 +1,7 @@
 <template>
   <t-loading v-if="loading" />
   <template v-else>
+    <empty-placeholder v-if="!apps.length" />
     <div v-for="app in apps">
       <application-item :app="app" />
     </div>
@@ -13,6 +14,7 @@ import { AppList } from '$typings/app';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { ref, onMounted } from 'vue';
 import ApplicationItem from './ApplicationItem.vue';
+import EmptyPlaceholder from '$components/empty-placeholder/EmptyPlaceholder.vue';
 
 const apps = ref<AppList>([]);
 const loading = ref<boolean>(true);
