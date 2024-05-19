@@ -1,21 +1,36 @@
 <template>
-  <div class="image-uploader-wrapper" :class="{ editing }" @click="handleClick" :style="style">
-    <t-avatar v-if="editing && imageBlobUrl" :size="size" :image="imageBlobUrl" />
+  <div
+    class="image-uploader-wrapper"
+    :class="{ editing }"
+    @click="handleClick"
+    :style="style"
+  >
+    <t-avatar
+      v-if="editing && imageBlobUrl"
+      :size="size"
+      :image="imageBlobUrl"
+      :image-props="{ fit: 'cover' }"
+    />
     <slot v-else />
     <div class="upload-button" v-if="editing">
       <t-icon name="upload" />
     </div>
-    <input style="display: none;" ref="input" type="file"
-      accept="image/gif, image/bmp, image/jpg, image/jpeg, image/png, image/webp" multiple="false"
-      @change="handleFileInputChange" />
+    <input
+      style="display: none"
+      ref="input"
+      type="file"
+      accept="image/gif, image/bmp, image/jpg, image/jpeg, image/png, image/webp"
+      multiple="false"
+      @change="handleFileInputChange"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import type { CSSProperties } from 'vue';
-import { patchImage, postImage } from '$api/request';
-import { cos, setCosToken } from '$utils/cos';
+import { ref, watchEffect } from "vue";
+import type { CSSProperties } from "vue";
+import { patchImage, postImage } from "$api/request";
+import { cos, setCosToken } from "$utils/cos";
 
 const props = defineProps<{
   size?: string;
@@ -32,7 +47,7 @@ const handleClick = () => {
   if (props.editing && !props.submitting) {
     input.value?.click();
   }
-}
+};
 
 const handleFileInputChange = () => {
   if (!input.value) {
@@ -45,7 +60,7 @@ const handleFileInputChange = () => {
     file.value = input.value.files![0];
     imageBlobUrl.value = URL.createObjectURL(file.value);
   }
-}
+};
 
 watchEffect(() => {
   if (!props.editing) {
@@ -63,7 +78,7 @@ const doSubmit = () => {
       return resolve(null);
     }
 
-    const fileExtension = file.value.name.split('.').pop() || '';
+    const fileExtension = file.value.name.split(".").pop() || "";
 
     const postImageRes = await postImage(fileExtension);
 
@@ -71,29 +86,33 @@ const doSubmit = () => {
       return reject(postImageRes.response);
     }
 
-    const { bucket, region, image_id, image_path, token } = postImageRes.response.data;
+    const { bucket, region, image_id, image_path, token } =
+      postImageRes.response.data;
 
     setCosToken(token);
 
-    cos.putObject({
-      Bucket: bucket,
-      Region: region,
-      Key: image_path,
-      StorageClass: 'STANDARD',
-      Body: file.value,
-    }, async (err) => {
-      if (err) {
-        reject(err);
-        return;
-      } else {
-        const res = await patchImage(image_id);
-        if (res.isErr) {
-          reject(res.response);
+    cos.putObject(
+      {
+        Bucket: bucket,
+        Region: region,
+        Key: image_path,
+        StorageClass: "STANDARD",
+        Body: file.value,
+      },
+      async (err) => {
+        if (err) {
+          reject(err);
           return;
+        } else {
+          const res = await patchImage(image_id);
+          if (res.isErr) {
+            reject(res.response);
+            return;
+          }
+          resolve(image_id);
         }
-        resolve(image_id);
       }
-    });
+    );
   });
 };
 
