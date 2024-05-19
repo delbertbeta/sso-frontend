@@ -1,14 +1,14 @@
-import type { Rsa } from "$typings/crypto";
-import type { User } from "$typings/user";
+import type { Rsa } from '$typings/crypto';
+import type { User } from '$typings/user';
 import {
   ErrorResult,
   ErrResponse,
   OkResponse,
   SuccessResult,
-} from "$typings/response";
-import { apiUrl } from "./url";
-import { PostImageRes } from "$typings/image";
-import { AppListRes } from "$typings/app";
+} from '$typings/response';
+import { apiUrl } from './url';
+import { PostImageRes } from '$typings/image';
+import { AppListRes, AppWithSecrets, CreateAppSecretRes } from '$typings/app';
 
 const decorateResponse = async <O, E>(res: Response) => {
   const resObj = await res.json();
@@ -27,13 +27,13 @@ const decorateResponse = async <O, E>(res: Response) => {
 
 const post = async <O, E>(url: string, data: any) => {
   const res = await fetch(url, {
-    method: "POST",
-    mode: "cors",
-    redirect: "follow",
-    credentials: "include",
+    method: 'POST',
+    mode: 'cors',
+    redirect: 'follow',
+    credentials: 'include',
     body: JSON.stringify(data),
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
   });
   return decorateResponse<O, E>(res);
@@ -41,13 +41,13 @@ const post = async <O, E>(url: string, data: any) => {
 
 const patch = async <O, E>(url: string, data: any) => {
   const res = await fetch(url, {
-    method: "PATCH",
-    mode: "cors",
-    redirect: "follow",
-    credentials: "include",
+    method: 'PATCH',
+    mode: 'cors',
+    redirect: 'follow',
+    credentials: 'include',
     body: JSON.stringify(data),
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
   });
   return decorateResponse<O, E>(res);
@@ -55,10 +55,10 @@ const patch = async <O, E>(url: string, data: any) => {
 
 const get = async <O, E>(url: string) => {
   const res = await fetch(url, {
-    method: "GET",
-    credentials: "include",
-    mode: "cors",
-    redirect: "follow",
+    method: 'GET',
+    credentials: 'include',
+    mode: 'cors',
+    redirect: 'follow',
   });
   return decorateResponse<O, E>(res);
 };
@@ -94,7 +94,7 @@ export const postImage = (extension: string) => {
 };
 
 export const patchImage = (imageId: string) => {
-  return patch<OkResponse<{}>, ErrResponse>(`${apiUrl.image}/${imageId}`, "");
+  return patch<OkResponse<{}>, ErrResponse>(`${apiUrl.image}/${imageId}`, '');
 };
 
 export const getAppList = () => {
@@ -103,4 +103,31 @@ export const getAppList = () => {
 
 export const createApp = (form: any) => {
   return post<OkResponse<{}>, ErrResponse>(apiUrl.application, form);
+};
+
+export const patchApp = (applicationId: string, form: any) => {
+  return patch<OkResponse<{}>, ErrResponse>(
+    `${apiUrl.application}/${applicationId}`,
+    form
+  );
+};
+
+export const getSingleApp = (applicationId: string) => {
+  return get<OkResponse<AppWithSecrets>, ErrResponse>(
+    `${apiUrl.application}/${applicationId}`
+  );
+};
+
+export const createAppSecret = (applicationId: string) => {
+  return post<OkResponse<CreateAppSecretRes>, ErrResponse>(
+    `${apiUrl.application}/${applicationId}/secrets`,
+    {}
+  );
+};
+
+export const getAppSecrets = (applicationId: string) => {
+  return get<
+    OkResponse<Pick<AppWithSecrets, 'application_secrets'>>,
+    ErrResponse
+  >(`${apiUrl.application}/${applicationId}/secrets`);
 };

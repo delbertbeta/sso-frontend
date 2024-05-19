@@ -67,6 +67,12 @@
       "$store": [
         "./src/store"
       ],
+      "$constants": [
+        "./src/constants"
+      ],
+      "$constants/*": [
+        "./src/constants/*"
+      ],
     },
   },
   "include": [

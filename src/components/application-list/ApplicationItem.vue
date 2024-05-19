@@ -4,10 +4,17 @@
       <face :nickname="app.name" :face-url="app.icon_url" size="66px" />
       <div class="application-item-info">
         <div class="application-item-info-name">{{ app.name }}</div>
-        <div class="application-item-info-description">{{ app.description }}</div>
+        <div class="application-item-info-description">
+          {{ app.description }}
+        </div>
       </div>
     </div>
-    <t-button class="application-item-right" theme="default" variant="outline">
+    <t-button
+      class="application-item-right"
+      theme="default"
+      variant="outline"
+      @click="handleEditClick"
+    >
       <template #icon><edit-1-icon slot="icon" /></template>
       编辑
     </t-button>
@@ -18,10 +25,23 @@
 import { AppListItem } from '$typings/app';
 import Face from '$components/face/Face.vue';
 import { Edit1Icon } from 'tdesign-icons-vue-next';
+import { useRouter } from 'vue-router';
+import { RouteName } from '$constants/router';
 
-defineProps<{
+const props = defineProps<{
   app: AppListItem;
 }>();
+
+const router = useRouter();
+
+const handleEditClick = () => {
+  router.push({
+    name: RouteName.AppEdit,
+    params: {
+      appId: props.app.id,
+    },
+  });
+};
 </script>
 
 <style>
@@ -49,6 +69,6 @@ defineProps<{
 }
 
 .application-item-info-description {
-  color: var(--td-font-gray-2)
+  color: var(--td-font-gray-2);
 }
 </style>
