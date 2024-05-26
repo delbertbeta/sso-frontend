@@ -39,7 +39,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { ArrowRightIcon } from 'tdesign-icons-vue-next';
-import type { SubmitContext, FormRule } from 'tdesign-vue-next';
+import type { SubmitContext, FormRule, Data } from 'tdesign-vue-next';
 import JSEncrypt from 'jsencrypt';
 
 import { submitLogin } from '$api';
@@ -67,7 +67,7 @@ const formData = ref({ ...INITIAL_DATA });
 const submitting = ref<boolean>(false);
 const hasError = ref<boolean>(false);
 
-const handleSubmit = async ({ validateResult }: SubmitContext<FormData>) => {
+const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
   submitting.value = true;
   hasError.value = false;
 

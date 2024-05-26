@@ -18,30 +18,35 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [TDesignResolver({
-        library: 'vue-next'
-      })],
+      resolvers: [
+        TDesignResolver({
+          library: 'vue-next',
+        }),
+      ],
     }),
     Components({
-      resolvers: [TDesignResolver({
-        library: 'vue-next'
-      })],
+      resolvers: [
+        TDesignResolver({
+          library: 'vue-next',
+        }),
+      ],
     }),
   ],
   resolve: {
     alias: {
-      '$router': resolve(__dirname, './src/router'),
-      '$api': resolve(__dirname, './src/api'),
-      '$pages': resolve(__dirname, './src/pages'),
-      '$components': resolve(__dirname, './src/components'),
-      '$assets': resolve(__dirname, './src/assets'),
-      '$utils': resolve(__dirname, './src/utils'),
-      '$layouts': resolve(__dirname, './src/layouts'),
-      '$typings': resolve(__dirname, './src/typings'),
-      '$store': resolve(__dirname, './src/store'),
+      $router: resolve(__dirname, './src/router'),
+      $api: resolve(__dirname, './src/api'),
+      $pages: resolve(__dirname, './src/pages'),
+      $components: resolve(__dirname, './src/components'),
+      $assets: resolve(__dirname, './src/assets'),
+      $utils: resolve(__dirname, './src/utils'),
+      $layouts: resolve(__dirname, './src/layouts'),
+      $typings: resolve(__dirname, './src/typings'),
+      $store: resolve(__dirname, './src/store'),
+      $constants: resolve(__dirname, './src/constants'),
     },
   },
   define: {
     API_END_POINT: `'${devConfig.apiEndPoint}'`,
   },
-})
+});
