@@ -13,7 +13,7 @@
   </div>
   <div class="app-secrets-container" v-else="">
     <t-list split>
-      <t-list-item v-for="secret in secrets" :key="secret.id">
+      <t-list-item v-for="secret in secrets.filter(v => !newSecret || v.id !== newSecret.id)" :key="secret.id">
         <t-list-item-meta :title="secret.secret"
           :description="`创建时间： ${dayjs.utc(secret.created_at).local().format('L LT')}`" />
       </t-list-item>
