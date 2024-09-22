@@ -9,14 +9,7 @@
         登录
       </t-button>
     </div>
-    <t-form
-      ref="form"
-      :data="formData"
-      :rules="rules"
-      :colon="true"
-      label-align="top"
-      @submit="handleSubmit"
-    >
+    <t-form ref="form" :data="formData" :rules="rules" :colon="true" label-align="top" @submit="handleSubmit">
       <t-form-item label="ID" name="username">
         <t-input v-model="formData.username" placeholder="请输入用于登录的 ID"></t-input>
       </t-form-item>
@@ -32,29 +25,26 @@
       <t-form-item label="确认密码" name="checkPassword">
         <t-input v-model="formData.checkPassword" type="password" placeholder="请重复输入密码"></t-input>
       </t-form-item>
-      <t-button
-        :class="{ 'has-error': hasError }"
-        theme="primary"
-        :loading="submitting"
-        type="submit"
-        style="margin-top: 32px; width: 100%;"
-      >注册</t-button>
+      <t-button :class="{ 'has-error': hasError }" theme="primary" :loading="submitting" type="submit"
+        style="margin-top: 32px; width: 100%;">注册</t-button>
     </t-form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { ArrowLeftIcon } from 'tdesign-icons-vue-next';
 import type { SubmitContext, FormRule, Data } from 'tdesign-vue-next';
 import JSEncrypt from 'jsencrypt';
 
 import { submitRegister } from '$api';
+import { processRedirectQuery } from '$utils/url';
 import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
 
 const router = useRouter();
+const route = useRoute();
 
 const INITIAL_DATA = {
   username: '',
@@ -137,7 +127,7 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
 };
 
 const handleGoBackClick = () => {
-  router.replace({ path: '/auth/login' });
+  router.replace({ path: '/auth/login', query: route.query });
 }
 </script>
 

@@ -9,34 +9,22 @@
         注册
       </t-button>
     </div>
-    <t-form
-      ref="form"
-      :data="formData"
-      :rules="rules"
-      :colon="true"
-      label-align="top"
-      @submit="handleSubmit"
-    >
+    <t-form ref="form" :data="formData" :rules="rules" :colon="true" label-align="top" @submit="handleSubmit">
       <t-form-item label="ID" name="username">
         <t-input v-model="formData.username" placeholder="请输入您的 ID"></t-input>
       </t-form-item>
       <t-form-item label="密码" name="password">
         <t-input v-model="formData.password" type="password" placeholder="请输入您的密码"></t-input>
       </t-form-item>
-      <t-button
-        :class="{ 'has-error': hasError }"
-        theme="primary"
-        type="submit"
-        style="margin-top: 32px; width: 100%; margin-bottom: 12px;"
-        :loading="submitting"
-      >登录</t-button>
+      <t-button :class="{ 'has-error': hasError }" theme="primary" type="submit"
+        style="margin-top: 32px; width: 100%; margin-bottom: 12px;" :loading="submitting">登录</t-button>
     </t-form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { ArrowRightIcon } from 'tdesign-icons-vue-next';
 import type { SubmitContext, FormRule, Data } from 'tdesign-vue-next';
@@ -44,10 +32,12 @@ import JSEncrypt from 'jsencrypt';
 
 import { submitLogin } from '$api';
 import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
+import { processRedirectQuery } from '$utils/url';
 import { safeDeleteStorage, safeGetStorage } from '$utils/local-storage';
 import type { LastPath } from '$typings/path';
 
 const router = useRouter();
+const route = useRoute();
 
 const INITIAL_DATA = {
   username: '',
@@ -96,6 +86,9 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
     const res = await submitLogin(submitFormData);
     if (!res.isErr) {
       MessagePlugin.success('登录成功');
+      if (processRedirectQuery(route.query)) {
+        return;
+      }
       router.replace({ path: safeGetStorage<LastPath>('last_path')?.path ?? '/' });
       safeDeleteStorage('last_path');
     } else {
@@ -114,7 +107,7 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
 };
 
 const handleGoBackClick = () => {
-  router.replace({ path: '/auth/register' });
+  router.replace({ path: '/auth/register', query: route.query });
 }
 </script>
 
