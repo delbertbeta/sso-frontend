@@ -1,15 +1,11 @@
 export interface PostImageRes {
   image_path: string;
   image_id: string;
-  bucket: string;
-  region: string;
-  token: CosToken;
+  token: TokenResponse;
 }
 
-export interface CosToken {
-  tmp_secret_id: string;
-  tmp_secret_key: string;
-  session_token: string;
+export interface TokenResponse {
+  presigned_url: string;
   start_time: number;
   expired_time: number;
 }

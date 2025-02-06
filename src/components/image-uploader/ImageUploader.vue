@@ -27,10 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import type { CSSProperties } from "vue";
-import { patchImage, postImage } from "$api/request";
-import { cos, setCosToken } from "$utils/cos";
+import { ref, watchEffect } from 'vue';
+import type { CSSProperties } from 'vue';
+import { patchImage, postImage } from '$api/request';
 
 const props = defineProps<{
   size?: string;
@@ -78,7 +77,7 @@ const doSubmit = () => {
       return resolve(null);
     }
 
-    const fileExtension = file.value.name.split(".").pop() || "";
+    const fileExtension = file.value.name.split('.').pop() || '';
 
     const postImageRes = await postImage(fileExtension);
 
@@ -86,33 +85,26 @@ const doSubmit = () => {
       return reject(postImageRes.response);
     }
 
-    const { bucket, region, image_id, image_path, token } =
-      postImageRes.response.data;
+    const {
+      image_id,
+      token: { presigned_url },
+    } = postImageRes.response.data;
 
-    setCosToken(token);
-
-    cos.putObject(
-      {
-        Bucket: bucket,
-        Region: region,
-        Key: image_path,
-        StorageClass: "STANDARD",
-        Body: file.value,
-      },
-      async (err) => {
-        if (err) {
-          reject(err);
-          return;
-        } else {
-          const res = await patchImage(image_id);
-          if (res.isErr) {
-            reject(res.response);
-            return;
-          }
-          resolve(image_id);
-        }
+    try {
+      await fetch(presigned_url, {
+        method: 'PUT',
+        body: file.value,
+      });
+      const res = await patchImage(image_id);
+      if (res.isErr) {
+        reject(res.response);
+        return;
       }
-    );
+      resolve(image_id);
+    } catch (err) {
+      reject(err);
+      return;
+    }
   });
 };
 

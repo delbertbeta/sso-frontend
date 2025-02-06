@@ -10,6 +10,7 @@ import devConfig from './dev.config';
 export default defineConfig({
   server: {
     port: devConfig.port,
+    host: '0.0.0.0',
     hmr: {
       port: devConfig.hmrPort,
       clientPort: devConfig.clientPort,
