@@ -131,3 +131,8 @@ export const getAppSecrets = (applicationId: string) => {
     ErrResponse
   >(`${apiUrl.application}/${applicationId}/secrets`);
 };
+
+export const api = {
+  get,
+  post,
+};

@@ -35,6 +35,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      '@': resolve(__dirname, './src'),
       $router: resolve(__dirname, './src/router'),
       $api: resolve(__dirname, './src/api'),
       $pages: resolve(__dirname, './src/pages'),

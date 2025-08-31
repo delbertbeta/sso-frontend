@@ -8,6 +8,7 @@ import IndexLayout from '$layouts/DefaultLayout.vue';
 import Developer from '$pages/admin/developer/Developer.vue';
 import EditApp from '$pages/admin/developer/EditApp.vue';
 import ErrorComponent from '$pages/error/Error.vue';
+import OidcConsent from '$pages/oidc/Consent.vue';
 import { RouteName } from '$constants/router';
 
 export const routes: RouteRecordRaw[] = [
@@ -34,6 +35,12 @@ export const routes: RouteRecordRaw[] = [
         component: EditApp,
       },
     ],
+  },
+  {
+    path: '/oidc/consent',
+    name: 'OidcConsent',
+    component: OidcConsent,
+    meta: { requiresAuth: true },
   },
   {
     path: '/:catchAll(.*)',

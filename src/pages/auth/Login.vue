@@ -9,21 +9,41 @@
         注册
       </t-button>
     </div>
-    <t-form ref="form" :data="formData" :rules="rules" :colon="true" label-align="top" @submit="handleSubmit">
+    <t-form
+      ref="form"
+      :data="formData"
+      :rules="rules"
+      :colon="true"
+      label-align="top"
+      @submit="handleSubmit"
+    >
       <t-form-item label="ID" name="username">
-        <t-input v-model="formData.username" placeholder="请输入您的 ID"></t-input>
+        <t-input
+          v-model="formData.username"
+          placeholder="请输入您的 ID"
+        ></t-input>
       </t-form-item>
       <t-form-item label="密码" name="password">
-        <t-input v-model="formData.password" type="password" placeholder="请输入您的密码"></t-input>
+        <t-input
+          v-model="formData.password"
+          type="password"
+          placeholder="请输入您的密码"
+        ></t-input>
       </t-form-item>
-      <t-button :class="{ 'has-error': hasError }" theme="primary" type="submit"
-        style="margin-top: 32px; width: 100%; margin-bottom: 12px;" :loading="submitting">登录</t-button>
+      <t-button
+        :class="{ 'has-error': hasError }"
+        theme="primary"
+        type="submit"
+        style="margin-top: 32px; width: 100%; margin-bottom: 12px"
+        :loading="submitting"
+        >登录</t-button
+      >
     </t-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { ArrowRightIcon } from 'tdesign-icons-vue-next';
@@ -42,16 +62,24 @@ const route = useRoute();
 const INITIAL_DATA = {
   username: '',
   password: '',
-}
+};
 
 const rules: { [key in keyof typeof INITIAL_DATA]: FormRule[] } = {
-  username: [{
-    required: true, message: '必填', type: 'error',
-  }, {
-    min: 1, max: 24, message: 'ID 长度在 1 - 24 之间', type: 'error',
-  }],
+  username: [
+    {
+      required: true,
+      message: '必填',
+      type: 'error',
+    },
+    {
+      min: 1,
+      max: 24,
+      message: 'ID 长度在 1 - 24 之间',
+      type: 'error',
+    },
+  ],
   password: [{ required: true, message: '必填', type: 'error' }],
-}
+};
 
 const formData = ref({ ...INITIAL_DATA });
 const submitting = ref<boolean>(false);
@@ -68,7 +96,9 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
   }
 
   try {
-    const { data: { token, public_key } } = await getRsaFromLocalStorage();
+    const {
+      data: { token, public_key },
+    } = await getRsaFromLocalStorage();
     const { username, password } = formData.value;
 
     const hashedPass = await digestSha256(password);
@@ -86,10 +116,21 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
     const res = await submitLogin(submitFormData);
     if (!res.isErr) {
       MessagePlugin.success('登录成功');
+
+      const oidcRequestRaw = sessionStorage.getItem('oidc_request');
+      if (oidcRequestRaw) {
+        const oidcRequest = JSON.parse(oidcRequestRaw);
+        sessionStorage.removeItem('oidc_request');
+        router.replace({ path: '/oidc/consent', query: oidcRequest });
+        return;
+      }
+
       if (processRedirectQuery(route.query)) {
         return;
       }
-      router.replace({ path: safeGetStorage<LastPath>('last_path')?.path ?? '/' });
+      router.replace({
+        path: safeGetStorage<LastPath>('last_path')?.path ?? '/',
+      });
       safeDeleteStorage('last_path');
     } else {
       if (res.response.code === 104) {
@@ -108,7 +149,19 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
 
 const handleGoBackClick = () => {
   router.replace({ path: '/auth/register', query: route.query });
-}
+};
+
+onMounted(() => {
+  const { response_type, client_id, redirect_uri } = route.query;
+  if (response_type && client_id && redirect_uri) {
+    const oidcRequest = {
+      response_type,
+      client_id,
+      redirect_uri,
+    };
+    sessionStorage.setItem('oidc_request', JSON.stringify(oidcRequest));
+  }
+});
 </script>
 
 <style scoped>

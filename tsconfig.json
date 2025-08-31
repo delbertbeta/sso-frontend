@@ -13,6 +13,9 @@
       "dom"
     ],
     "paths": {
+      "@/*": [
+        "./src/*"
+      ],
       "$router/*": [
         "./src/router/*"
       ],
