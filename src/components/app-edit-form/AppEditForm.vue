@@ -43,8 +43,8 @@
         :maxcharacter="250"
       ></t-textarea>
     </t-form-item>
-    <t-form-item label="认证回调 URL" name="authorization_callback_url">
-      <t-input v-model="formData.authorization_callback_url"></t-input>
+    <t-form-item label="认证回调 URL" name="redirect_uris">
+      <t-tag-input v-model="formData.redirect_uris"></t-tag-input>
     </t-form-item>
   </t-form>
 </template>
@@ -116,24 +116,30 @@ const rules: { [key in keyof Partial<CreateAppParams>]: FormRule[] } = {
       type: 'error',
     },
   ],
-  authorization_callback_url: [
+  redirect_uris: [
     {
       required: true,
       message: '必填',
       type: 'error',
     },
     {
-      validator: (val) => val.length >= 2 && val.length <= 200,
-      message: 'URL 长度在 1 - 200 之间',
-      type: 'error',
-    },
-    {
-      url: {
-        protocols: ['http', 'https'],
-        require_protocol: true,
+      validator: (val: string[]) => {
+        for (const url of val) {
+          if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            return {
+              result: false,
+              message: `"${url}" 必须是合法的 URL，需要带 http/https 前缀`,
+            };
+          }
+          if (url.length > 200 || url.length < 2) {
+            return {
+              result: false,
+              message: `"${url}" URL 长度在 1 - 200 之间`,
+            };
+          }
+        }
+        return true;
       },
-      message: '必须是合法的 URL，需要带 http/https 前缀',
-      type: 'error',
     },
   ],
 };
@@ -144,7 +150,7 @@ const formData = reactive<CreateAppParams>(
     description: '',
     icon_id: '',
     homepage_url: '',
-    authorization_callback_url: '',
+    redirect_uris: [],
   }
 );
 

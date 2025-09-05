@@ -49,6 +49,7 @@ declare module 'vue' {
     TMenuItem: typeof import('tdesign-vue-next')['MenuItem']
     TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
     TSubmenu: typeof import('tdesign-vue-next')['Submenu']
+    TTagInput: typeof import('tdesign-vue-next')['TagInput']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
     TTooltip: typeof import('tdesign-vue-next')['Tooltip']
   }

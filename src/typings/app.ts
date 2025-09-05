@@ -3,7 +3,7 @@ export interface AppBase {
   name: string;
   description: string;
   homepage_url: string;
-  authorization_callback_url: string;
+  redirect_uris: string[];
   icon_id: string;
   creator_id: string;
 }
@@ -22,10 +22,7 @@ export interface AppWithSecrets extends AppWithIconUrl {
   application_secrets: AppSecret[];
 }
 
-export type AppListItem = Omit<
-  AppWithIconUrl,
-  'authorization_callback_url' | 'creator_id'
->;
+export type AppListItem = Omit<AppWithIconUrl, 'redirect_uris' | 'creator_id'>;
 
 export type CreateAppParams = Omit<AppBase, 'id' | 'creator_id'>;
 export type AppList = AppListItem[];

@@ -3,11 +3,28 @@
   <template v-else>
     <div class="form-area">
       <area-title title="基础信息" />
-      <app-edit-form ref="appEditForm" :defaultFormData="defaultFormData" :currentIconUrl="application?.icon_url"
-        :submitting="submitting" @submit="handleSubmit" @error="handleError" />
-      <t-button :class="{ 'has-error': hasError, 'save-button': true }" theme="primary" :loading="submitting"
-        type="submit" @click="triggerSubmit" style="margin-top: 32px; width: 100%">保存</t-button>
-      <app-secrets :secrets="applicationSecrets" @secretsUpdate="handleSecretsUpdate" :application-id="appId" />
+      <app-edit-form
+        ref="appEditForm"
+        :defaultFormData="defaultFormData"
+        :currentIconUrl="application?.icon_url"
+        :submitting="submitting"
+        @submit="handleSubmit"
+        @error="handleError"
+      />
+      <t-button
+        :class="{ 'has-error': hasError, 'save-button': true }"
+        theme="primary"
+        :loading="submitting"
+        type="submit"
+        @click="triggerSubmit"
+        style="margin-top: 32px; width: 100%"
+        >保存</t-button
+      >
+      <app-secrets
+        :secrets="applicationSecrets"
+        @secretsUpdate="handleSecretsUpdate"
+        :application-id="appId"
+      />
     </div>
   </template>
 </template>
@@ -91,20 +108,19 @@ const defaultFormData = computed<CreateAppParams | null>(() => {
   if (!application.value) {
     return null;
   }
-  const { name, description, authorization_callback_url, homepage_url } =
-    application.value;
+  const { name, description, redirect_uris, homepage_url } = application.value;
   return {
     icon_id: '',
     name,
     description,
-    authorization_callback_url,
+    redirect_uris,
     homepage_url,
   };
 });
 
 const handleSecretsUpdate = (appSecrets: AppSecret[]) => {
   applicationSecrets.value = appSecrets;
-}
+};
 </script>
 
 <style scoped>

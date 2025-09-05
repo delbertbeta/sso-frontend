@@ -49,15 +49,18 @@ import { MessagePlugin } from 'tdesign-vue-next';
 import { ArrowRightIcon } from 'tdesign-icons-vue-next';
 import type { SubmitContext, FormRule, Data } from 'tdesign-vue-next';
 import JSEncrypt from 'jsencrypt';
+import { useStore } from 'vuex';
 
 import { submitLogin } from '$api';
 import { digestSha256, getRsaFromLocalStorage } from '$utils/crypto';
 import { processRedirectQuery } from '$utils/url';
 import { safeDeleteStorage, safeGetStorage } from '$utils/local-storage';
 import type { LastPath } from '$typings/path';
+import { key } from '$store';
 
 const router = useRouter();
 const route = useRoute();
+const store = useStore(key);
 
 const INITIAL_DATA = {
   username: '',
@@ -84,6 +87,24 @@ const rules: { [key in keyof typeof INITIAL_DATA]: FormRule[] } = {
 const formData = ref({ ...INITIAL_DATA });
 const submitting = ref<boolean>(false);
 const hasError = ref<boolean>(false);
+
+const handleRedirect = () => {
+  const oidcRequestRaw = sessionStorage.getItem('oidc_request');
+  if (oidcRequestRaw) {
+    const oidcRequest = JSON.parse(oidcRequestRaw);
+    sessionStorage.removeItem('oidc_request');
+    router.replace({ path: '/oidc/consent', query: oidcRequest });
+    return;
+  }
+
+  if (processRedirectQuery(route.query)) {
+    return;
+  }
+  router.replace({
+    path: safeGetStorage<LastPath>('last_path')?.path ?? '/',
+  });
+  safeDeleteStorage('last_path');
+};
 
 const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
   submitting.value = true;
@@ -116,22 +137,7 @@ const handleSubmit = async ({ validateResult }: SubmitContext<Data>) => {
     const res = await submitLogin(submitFormData);
     if (!res.isErr) {
       MessagePlugin.success('登录成功');
-
-      const oidcRequestRaw = sessionStorage.getItem('oidc_request');
-      if (oidcRequestRaw) {
-        const oidcRequest = JSON.parse(oidcRequestRaw);
-        sessionStorage.removeItem('oidc_request');
-        router.replace({ path: '/oidc/consent', query: oidcRequest });
-        return;
-      }
-
-      if (processRedirectQuery(route.query)) {
-        return;
-      }
-      router.replace({
-        path: safeGetStorage<LastPath>('last_path')?.path ?? '/',
-      });
-      safeDeleteStorage('last_path');
+      handleRedirect();
     } else {
       if (res.response.code === 104) {
         MessagePlugin.error('ID 或密码错误，请检查后重试');
@@ -151,7 +157,7 @@ const handleGoBackClick = () => {
   router.replace({ path: '/auth/register', query: route.query });
 };
 
-onMounted(() => {
+onMounted(async () => {
   const { response_type, client_id, redirect_uri } = route.query;
   if (response_type && client_id && redirect_uri) {
     const oidcRequest = {
@@ -160,6 +166,20 @@ onMounted(() => {
       redirect_uri,
     };
     sessionStorage.setItem('oidc_request', JSON.stringify(oidcRequest));
+  }
+
+  if (store.getters['user/self']) {
+    handleRedirect();
+    return;
+  }
+
+  try {
+    await store.dispatch('user/getSelfInfo');
+    if (store.getters['user/self']) {
+      handleRedirect();
+    }
+  } catch (e) {
+    // not logged in, do nothing
   }
 });
 </script>

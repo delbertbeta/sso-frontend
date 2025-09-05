@@ -132,7 +132,9 @@ export const getAppSecrets = (applicationId: string) => {
   >(`${apiUrl.application}/${applicationId}/secrets`);
 };
 
-export const api = {
-  get,
-  post,
+export const authorizeOidc = (form: any) => {
+  return post<OkResponse<{ redirect_to: string }>, ErrResponse>(
+    apiUrl.oidc.authorize,
+    form
+  );
 };

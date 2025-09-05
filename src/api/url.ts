@@ -12,6 +12,9 @@ export const apiUrl = {
     login: getFullUrl('/auth/login'),
     logout: getFullUrl('/auth/logout'),
   },
+  oidc: {
+    authorize: getFullUrl('/oidc/authorize'),
+  },
   user: {
     self: getFullUrl('/user'),
   },
