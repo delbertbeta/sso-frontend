@@ -8,7 +8,7 @@
       <template #dropdown>
         <t-dropdown-menu>
           <t-dropdown-item value="logout">
-            <t-icon name="logout" style="margin-right: 8px;" />登出
+            <t-icon name="logout" style="margin-right: 8px" />登出
           </t-dropdown-item>
         </t-dropdown-menu>
       </template>
@@ -39,7 +39,7 @@ const handleClick = async (e: DropdownOption) => {
       router.replace('/auth/login');
     }
   }
-}
+};
 </script>
 
 <style scoped>

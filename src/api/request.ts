@@ -53,8 +53,16 @@ const patch = async <O, E>(url: string, data: any) => {
   return decorateResponse<O, E>(res);
 };
 
-const get = async <O, E>(url: string) => {
-  const res = await fetch(url, {
+const get = async <O, E>(url: string, query: any = null) => {
+  const finalUrl = new URL(url);
+  if (query) {
+    Object.keys(query).forEach((key) => {
+      if (query[key] !== undefined && query[key] !== null) {
+        finalUrl.searchParams.append(key, query[key]);
+      }
+    });
+  }
+  const res = await fetch(finalUrl.toString(), {
     method: 'GET',
     credentials: 'include',
     mode: 'cors',
@@ -133,7 +141,7 @@ export const getAppSecrets = (applicationId: string) => {
 };
 
 export const authorizeOidc = (form: any) => {
-  return post<OkResponse<{ redirect_to: string }>, ErrResponse>(
+  return get<OkResponse<{ redirect_uri: string }>, ErrResponse>(
     apiUrl.oidc.authorize,
     form
   );

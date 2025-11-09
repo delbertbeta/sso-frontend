@@ -39,6 +39,8 @@ const getQueryParams = () => {
     redirectUri: query.redirect_uri as string,
     responseType: query.response_type as string,
     nonce: query.nonce as string,
+    codeChallenge: query.code_challenge as string,
+    codeChallengeMethod: query.code_challenge_method as string,
   };
 };
 
@@ -69,9 +71,11 @@ const handleConsent = async () => {
       redirect_uri: params.redirectUri,
       response_type: params.responseType,
       nonce: params.nonce,
+      code_challenge: params.codeChallenge,
+      code_challenge_method: params.codeChallengeMethod,
     });
-    if (!response.isErr && response.response.data.redirect_to) {
-      window.location.href = response.response.data.redirect_to;
+    if (!response.isErr && response.response.data.redirect_uri) {
+      window.location.href = response.response.data.redirect_uri;
     }
   } catch (error) {
     console.error('Authorization failed:', error);

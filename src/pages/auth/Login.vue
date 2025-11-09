@@ -158,12 +158,18 @@ const handleGoBackClick = () => {
 };
 
 onMounted(async () => {
-  const { response_type, client_id, redirect_uri } = route.query;
+  const { response_type, client_id, redirect_uri, scope, state, nonce, code_challenge, code_challenge_method } =
+    route.query;
   if (response_type && client_id && redirect_uri) {
     const oidcRequest = {
       response_type,
       client_id,
       redirect_uri,
+      scope,
+      state,
+      nonce,
+      code_challenge,
+      code_challenge_method,
     };
     sessionStorage.setItem('oidc_request', JSON.stringify(oidcRequest));
   }

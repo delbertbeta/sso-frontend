@@ -13,7 +13,9 @@ export const actions: ActionTree<UserState, RootState> = {
     if (selfInfo.isErr) {
       if (selfInfo.response.code === 106) {
         safeSetStorage<LastPath>('last_path', {
-          path: router.currentRoute.value.fullPath,
+          path: router.currentRoute.value.fullPath.startsWith('/auth')
+            ? '/'
+            : router.currentRoute.value.fullPath,
         });
         router.push({ name: RouteName.Login });
       } else {
