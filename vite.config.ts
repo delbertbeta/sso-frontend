@@ -4,16 +4,18 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
-import devConfig from './dev.config';
+import { getAppConfig } from './config/app';
+
+const appConfig = getAppConfig();
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: devConfig.port,
+    port: appConfig.port,
     host: '0.0.0.0',
     hmr: {
-      port: devConfig.hmrPort,
-      clientPort: devConfig.clientPort,
+      port: appConfig.hmrPort,
+      clientPort: appConfig.clientPort,
     },
   },
   plugins: [
@@ -49,6 +51,6 @@ export default defineConfig({
     },
   },
   define: {
-    API_END_POINT: `'${devConfig.apiEndPoint}'`,
+    API_END_POINT: `'${appConfig.apiEndPoint}'`,
   },
 });

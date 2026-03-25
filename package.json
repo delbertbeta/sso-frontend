@@ -2,8 +2,9 @@
   "name": "sso-frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "APP_ENV=dev vite",
+    "build": "APP_ENV=prod vite build",
+    "build:staging": "APP_ENV=staging vite build",
     "serve": "vite preview"
   },
   "dependencies": {
