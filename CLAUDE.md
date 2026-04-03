@@ -93,13 +93,13 @@ The project uses extensive path aliases configured in both vite.config.ts and ts
 
 ## CI/CD Pipeline
 
-Drone CI configuration in `.drone.yml`:
+GitHub Actions deployment configuration in `.github/workflows/deploy-r2.yml`:
 
-- Triggers on push to main branch
-- Uses Node.js 20 Docker image
-- Production build uses `npm run build` and staging can use `npm run build:staging`
-- Builds and deploys to S3 storage
-- Static asset serving from S3
+- Runs manually via `workflow_dispatch`
+- Lets the operator choose `Online` or `Staging`
+- Uses `yarn build` for `Online` and `yarn build:staging` for `Staging`
+- Uploads `dist/` to Cloudflare R2
+- Uses `R2_BUCKET` for `Online` and `R2_STAGING_BUCKET` for `Staging`
 
 ## Key Implementation Details
 
