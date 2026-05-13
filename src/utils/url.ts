@@ -1,4 +1,4 @@
-import { LocationQuery } from 'vue-router';
+import { LocationQuery, LocationQueryRaw } from 'vue-router';
 import { isIP } from 'is-ip';
 import { isArray } from 'lodash-es';
 
@@ -29,4 +29,18 @@ export function processRedirectQuery(query: LocationQuery) {
     console.error("Can't parse redirect_url", e);
     return false;
   }
+}
+
+export function getLoginRedirectQuery(query: LocationQuery): LocationQueryRaw {
+  const redirectUrl = isArray(query.redirect_url)
+    ? query.redirect_url[0]
+    : query.redirect_url;
+
+  if (!redirectUrl) {
+    return {};
+  }
+
+  return {
+    redirect_url: redirectUrl,
+  };
 }

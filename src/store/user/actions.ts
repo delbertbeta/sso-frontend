@@ -6,6 +6,7 @@ import router from '$router/router';
 import { safeSetStorage } from '$utils/local-storage';
 import { LastPath } from '$typings/path';
 import { RouteName } from '$constants/router';
+import { getLoginRedirectQuery } from '$utils/url';
 
 export const actions: ActionTree<UserState, RootState> = {
   async getSelfInfo({ commit }) {
@@ -15,7 +16,10 @@ export const actions: ActionTree<UserState, RootState> = {
         safeSetStorage<LastPath>('last_path', {
           path: router.currentRoute.value.fullPath,
         });
-        router.push({ name: RouteName.Login });
+        router.push({
+          name: RouteName.Login,
+          query: getLoginRedirectQuery(router.currentRoute.value.query),
+        });
       } else {
         MessagePlugin.error(
           '获取登录信息失败，请刷新重试：' + selfInfo.response.msg
